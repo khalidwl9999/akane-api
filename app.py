@@ -14,27 +14,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# صوت ياباني كيوت جداً (ستايل أنمي قريب من بياتريس)
+VOICE = "ja-JP-NanamiNeural"
+
 @app.get("/")
 def read_root():
-    return {"status": "Akane Multi-Language Voice Server is Running! 💕"}
+    return {"status": "Akane Japanese Voice Server is Running! 💕"}
 
 @app.get("/tts")
-async def text_to_speech(text: str, lang: str = "ar"):
+async def text_to_speech(text: str):
     if not text:
         return {"error": "No text provided"}
-
-    # اختيار الصوت حسب لغة التطبيق (عربي أو إنجليزي)
-    if lang == "en":
-        voice = "en-US-AriaNeural"  # صوت إنجليزي كيوت وواضح
-    else:
-        voice = "ar-EG-SalmaNeural" # صوت عربي رقيق وطبيعي
 
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
     temp_path = temp_file.name
     temp_file.close()
 
     try:
-        communicate = edge_tts.Communicate(text, voice)
+        communicate = edge_tts.Communicate(text, VOICE)
         await communicate.save(temp_path)
 
         with open(temp_path, "rb") as audio_file:
