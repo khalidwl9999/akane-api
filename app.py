@@ -6,7 +6,6 @@ import os
 
 app = FastAPI()
 
-# تفعيل الـ CORS عشان تطبيقك يقدر يكلم السيرفر بدون مشاكل أمنية
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,33 +14,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# صوت أكاني الكيوت (عربي)
-VOICE = "ar-EG-SalmaNeural" 
-
 @app.get("/")
 def read_root():
-    return {"status": "Akane Voice Server is Running! 💕"}
+    return {"status": "Akane Multi-Language Voice Server is Running! 💕"}
 
 @app.get("/tts")
-async def text_to_speech(text: str):
+async def text_to_speech(text: str, lang: str = "ar"):
     if not text:
         return {"error": "No text provided"}
 
-    # إنشاء ملف مؤقت لحفظ الصوت
+    # اختيار الصوت حسب لغة التطبيق (عربي أو إنجليزي)
+    if lang == "en":
+        voice = "en-US-AriaNeural"  # صوت إنجليزي كيوت وواضح
+    else:
+        voice = "ar-EG-SalmaNeural" # صوت عربي رقيق وطبيعي
+
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
     temp_path = temp_file.name
     temp_file.close()
 
     try:
-        # تحويل النص لصوت كيوت
-        communicate = edge_tts.Communicate(text, VOICE)
+        communicate = edge_tts.Communicate(text, voice)
         await communicate.save(temp_path)
 
-        # قراءة الصوت وإرساله للتطبيق
         with open(temp_path, "rb") as audio_file:
             audio_data = audio_file.read()
 
-        # مسح الملف المؤقت عشان السيرفر ما يتعبى
         os.remove(temp_path)
 
         return Response(content=audio_data, media_type="audio/mpeg")
