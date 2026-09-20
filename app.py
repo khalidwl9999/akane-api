@@ -31,7 +31,8 @@ async def text_to_speech(text: str):
     temp_file.close()
 
     try:
-        communicate = edge_tts.Communicate(text, VOICE)
+        # رفع حدة الصوت 15 هرتز وزيادة السرعة 10% لتغيير النبرة كلياً وجعلها طفولية
+        communicate = edge_tts.Communicate(text, VOICE, rate="+10%", pitch="+15Hz")
         await communicate.save(temp_path)
 
         with open(temp_path, "rb") as audio_file:
