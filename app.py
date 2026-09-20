@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # صوت ياباني كيوت جداً (ستايل أنمي قريب من بياتريس)
-VOICE = "ja-JP-NanamiNeural"
+VOICE = "ja-JP-ShioriNeural"
 
 @app.get("/")
 def read_root():
