@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# صوت ياباني كيوت جداً (ستايل أنمي قريب من بياتريس)
+# صوت أكاني الجديد (مختلف عن كريس)
 VOICE = "ja-JP-ShioriNeural"
 
 @app.get("/")
