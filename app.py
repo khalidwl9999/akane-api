@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # صوت أكاني الجديد (مختلف عن كريس)
-VOICE = "ja-JP-ShioriNeural"
+VOICE = "ja-JP-NanamiNeural"
 
 @app.get("/")
 def read_root():
